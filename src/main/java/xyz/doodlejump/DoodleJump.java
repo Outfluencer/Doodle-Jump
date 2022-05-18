@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -24,11 +26,13 @@ public class DoodleJump {
 
     public static Texture lol;
 
-    public static TextField textField;
+    public static final List<TextField> textFields = new ArrayList<>();
+    public static TextField usernameField;
+    public static TextField passwordField;
 
     public static final int width = 400, height = 700;
 
-    public static TextField writeHandle = null;
+    public static double mouseX, mouseY;
 
     public static void startWindow() throws IOException {
         if (!glfwInit()) {
@@ -48,47 +52,27 @@ public class DoodleJump {
         // 1 = VSYNC, 0 = infinit fps;
         glfwSwapInterval(1);
 
-        textField = new TextField("", width / 2 - (260 / 2), height / 2, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+        usernameField = new TextField("", width / 2 - (260 / 2), height / 2, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+        usernameField.lengthLimit = 16;
+        textFields.add(usernameField);
+
+        passwordField = new TextField("", width / 2 - (260 / 2), height / 2 + 64, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+        passwordField.lengthLimit = 16;
+        passwordField.textFunction = text -> text.replaceAll(".", "*");
+        textFields.add(passwordField);
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
-            if(writeHandle != null) {
-                if(writeHandle.text.length() < 16) {
-                    writeHandle.text += (char) codepoint;
-                }
-            }
+            textFields.forEach(textField -> textField.onCharTyped((char) codepoint));
         });
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            if(writeHandle == null) return;
-            if (key == GLFW_KEY_BACKSPACE && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
-                if(writeHandle.text.length() > 0) {
-                    writeHandle.text = writeHandle.text.substring(0, writeHandle.text.length() - 1);
-                }
-            }
+            textFields.forEach(textField -> textField.onKey(key, scancode, action, mods));
         });
-
+        glfwSetCursorPosCallback(windowHandle, (window, xpos, ypos) -> {
+            mouseX = xpos;
+            mouseY = ypos;
+        });
         glfwSetMouseButtonCallback(windowHandle, (window, button, action, mods) -> {
-            if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-
-                double[] x = new double[1];
-                double[] y = new double[1];
-
-                glfwGetCursorPos(window, x, y);
-
-                double xPos = x[0];
-                double yPos = y[0];
-
-                if(xPos > textField.posX && xPos < textField.posX + textField.width && yPos > textField.posY && yPos < textField.posY + textField.height) {
-                    writeHandle = textField;
-                    System.out.println(writeHandle);
-                } else {
-                    writeHandle = null;
-                }
-
-
-            }
-            else if( button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-                System.out.println("Right mouse button pressed");
-            }
+            textFields.forEach(textField -> textField.onMouseClick(button, action, mods));
         });
 
 
@@ -99,8 +83,8 @@ public class DoodleJump {
                 isProcessRunning = false;
             }
             int ticks = timer.update();
-            if(gameState == GameState.RUNNING){
-                for(int i = 0; i < Math.min(ticks, 10); i++){
+            if (gameState == GameState.RUNNING) {
+                for (int i = 0; i < Math.min(ticks, 10); i++) {
                     runGameTick();
                 }
             }
@@ -111,7 +95,6 @@ public class DoodleJump {
     }
 
     public static void runGameTick() {
-
 
 
     }
@@ -127,8 +110,6 @@ public class DoodleJump {
         glLoadIdentity();
 
         glDisable(GL_CULL_FACE);
-
-
 
 
         drawBackground();
@@ -155,11 +136,11 @@ public class DoodleJump {
         glEnd();
 
 
-        if(gameState == GameState.RUNNING){
+        if (gameState == GameState.RUNNING) {
             drawGameScreen();
         }
 
-        if(gameState == GameState.LOGIN) {
+        if (gameState == GameState.LOGIN) {
             drawLoginScreen();
         }
     }
@@ -175,8 +156,8 @@ public class DoodleJump {
     public static void drawLoginScreen() {
         int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Login");
         GLYPH_PAGE_FONT_RENDERER.drawString("Login", width / 2 - size / 2, height / 4, Color.yellow, true);
-        textField.render();
- ///         textField = new TextField("", width / 2 - 100, height / 2, 200, 20, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+        textFields.forEach(TextField::render);
+        ///         textField = new TextField("", width / 2 - 100, height / 2, 200, 20, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);
 

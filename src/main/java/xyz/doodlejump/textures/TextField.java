@@ -1,9 +1,10 @@
 package xyz.doodlejump.textures;
 
-import java.awt.*;
+import org.lwjgl.glfw.GLFW;
+import xyz.doodlejump.DoodleJump;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import java.awt.*;
+import java.util.function.Function;
 
 public class TextField {
 
@@ -14,10 +15,13 @@ public class TextField {
 
     public int width;
     public int height;
+    public int lengthLimit = 128;
+
+    public boolean focused;
+    public Function<String, String> textFunction;
 
     private long timer;
     private boolean blink;
-
 
     public GlyphPageFontRenderer glyphPageFontRenderer;
 
@@ -41,46 +45,32 @@ public class TextField {
         RenderUtils.rect(posX - 1.0, posY - 1.0, width + 2.0, height + 2.0, Color.BLACK);
         RenderUtils.rect(posX, posY, width, height, Color.WHITE);
         String textureRender = glyphPageFontRenderer.trimStringToWidth(text, width);
-        if(blink) textureRender += "_";
+        if(textFunction != null) textureRender = textFunction.apply(textureRender);
+        if(blink && focused) textureRender += "_";
         glyphPageFontRenderer.drawString(textureRender, posX, posY, Color.BLACK, false);
     }
 
     public void onMouseClick(int button, int action, int mods) {
-
+        if(action == GLFW.GLFW_PRESS && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+            if(DoodleJump.mouseX >= posX && DoodleJump.mouseX <= posX + width && DoodleJump.mouseY >= posY && DoodleJump.mouseY <= posY + height) {
+                focused = true;
+            }else {
+                focused = false;
+            }
+        }
     }
 
     public void onCharTyped(char c) {
-
+        if(text.length() < lengthLimit && focused) {
+            text += c;
+        }
     }
 
     public void onKey(int key, int scancode, int action, int mods) {
-
+        if((action == GLFW.GLFW_PRESS || action == GLFW.GLFW_REPEAT) && key == GLFW.GLFW_KEY_BACKSPACE) {
+            if(text.length() > 0 && focused) {
+                text = text.substring(0, text.length() - 1);
+            }
+        }
     }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setGlyphPageFontRenderer(GlyphPageFontRenderer glyphPageFontRenderer) {
-        this.glyphPageFontRenderer = glyphPageFontRenderer;
-    }
-
-
-
 }
