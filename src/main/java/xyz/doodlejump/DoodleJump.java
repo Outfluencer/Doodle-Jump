@@ -161,6 +161,8 @@ public class DoodleJump {
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);
 
+        size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Password");
+        GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Password", width / 2 - size / 2, height / 2 + 40, Color.BLUE, true);
     }
 
 }
