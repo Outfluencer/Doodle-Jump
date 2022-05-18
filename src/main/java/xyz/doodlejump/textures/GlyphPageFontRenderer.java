@@ -212,12 +212,12 @@ public class GlyphPageFontRenderer
         final StringBuilder stringbuilder = new StringBuilder();
         final int j = reverse ? (text.length() - 1) : 0;
         final int k = reverse ? -1 : 1;
-        int width = 0;
+        double width = 0;
         for (int i = j; i >= 0 && i < text.length() && i < maxWidth; i += k) {
             char character = text.charAt(i);
             final GlyphPage currentPage = this.getCurrentGlyphPage();
-            width += (int)((currentPage.getWidth(character) - 8.0f) / 2.0f);
-            if (i > width) {
+            width += (int)((currentPage.getWidth(character) - 8.0f) / 2.0f) + 0.5;
+            if (width >= maxWidth) {
                 break;
             }
             if (reverse) {

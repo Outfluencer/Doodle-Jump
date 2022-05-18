@@ -15,6 +15,9 @@ public class TextField {
     public int width;
     public int height;
 
+    private long timer;
+    private boolean blink;
+
 
     public GlyphPageFontRenderer glyphPageFontRenderer;
 
@@ -29,15 +32,29 @@ public class TextField {
 
     public void render() {
 
-        glColor4d(1,1,1,1);
-        glBegin(GL_QUADS);
-        glVertex2d(posX, posY);
-        glVertex2d(posX + width, posY);
-        glVertex2d(posX + width, posY + height);
-        glVertex2d(posX, posY +height);
-        glEnd();
+        final long now = System.currentTimeMillis();
+        if (now - timer >= 500) {
+            timer = now;
+            blink ^= true;
+        }
+
+        RenderUtils.rect(posX - 1.0, posY - 1.0, width + 2.0, height + 2.0, Color.BLACK);
+        RenderUtils.rect(posX, posY, width, height, Color.WHITE);
         String textureRender = glyphPageFontRenderer.trimStringToWidth(text, width);
+        if(blink) textureRender += "_";
         glyphPageFontRenderer.drawString(textureRender, posX, posY, Color.BLACK, false);
+    }
+
+    public void onMouseClick(int button, int action, int mods) {
+
+    }
+
+    public void onCharTyped(char c) {
+
+    }
+
+    public void onKey(int key, int scancode, int action, int mods) {
+
     }
 
     public void setText(String text) {
