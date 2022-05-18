@@ -114,6 +114,15 @@ public class DoodleJump {
 
 
         drawBackground();
+        if (gameState == GameState.RUNNING) {
+            drawGameScreen();
+        }
+
+        if (gameState == GameState.LOGIN) {
+            drawLoginScreen();
+        }
+
+        components.forEach(Component::render);
         lol.draw(10, 10, 50, 50);
 
     }
@@ -135,15 +144,6 @@ public class DoodleJump {
             glVertex2d(width, y);
         }
         glEnd();
-
-
-        if (gameState == GameState.RUNNING) {
-            drawGameScreen();
-        }
-
-        if (gameState == GameState.LOGIN) {
-            drawLoginScreen();
-        }
     }
 
     public static double x, y;
@@ -157,7 +157,7 @@ public class DoodleJump {
     public static void drawLoginScreen() {
         int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Login");
         GLYPH_PAGE_FONT_RENDERER.drawString("Login", width / 2 - size / 2, height / 4, Color.yellow, true);
-        components.forEach(Component::render);
+
         ///         textField = new TextField("", width / 2 - 100, height / 2, 200, 20, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);
