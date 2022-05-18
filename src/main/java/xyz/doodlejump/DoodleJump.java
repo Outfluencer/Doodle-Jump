@@ -2,22 +2,21 @@ package xyz.doodlejump;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import xyz.doodlejump.components.Button;
+import xyz.doodlejump.components.Component;
+import xyz.doodlejump.components.TextField;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
-import xyz.doodlejump.textures.TextField;
 import xyz.doodlejump.textures.Texture;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
-import static org.lwjgl.opengl.GL46.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL46.*;
 
 public class DoodleJump {
 
@@ -26,7 +25,7 @@ public class DoodleJump {
 
     public static Texture lol;
 
-    public static final List<TextField> textFields = new ArrayList<>();
+    public static final List<Component> components = new ArrayList<>();
     public static TextField usernameField;
     public static TextField passwordField;
 
@@ -54,25 +53,27 @@ public class DoodleJump {
 
         usernameField = new TextField("", width / 2 - (260 / 2), height / 2, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         usernameField.lengthLimit = 16;
-        textFields.add(usernameField);
+        components.add(usernameField);
 
         passwordField = new TextField("", width / 2 - (260 / 2), height / 2 + 64, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         passwordField.lengthLimit = 16;
         passwordField.textFunction = text -> text.replaceAll(".", "*");
-        textFields.add(passwordField);
+        components.add(passwordField);
+
+        components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> System.out.println("Penis"), "Login", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
-            textFields.forEach(textField -> textField.onCharTyped((char) codepoint));
+            components.forEach(textField -> textField.onCharTyped((char) codepoint));
         });
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            textFields.forEach(textField -> textField.onKey(key, scancode, action, mods));
+            components.forEach(textField -> textField.onKey(key, scancode, action, mods));
         });
         glfwSetCursorPosCallback(windowHandle, (window, xpos, ypos) -> {
             mouseX = xpos;
             mouseY = ypos;
         });
         glfwSetMouseButtonCallback(windowHandle, (window, button, action, mods) -> {
-            textFields.forEach(textField -> textField.onMouseClick(button, action, mods));
+            components.forEach(textField -> textField.onMouseClick(button, action, mods));
         });
 
 
@@ -156,7 +157,7 @@ public class DoodleJump {
     public static void drawLoginScreen() {
         int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Login");
         GLYPH_PAGE_FONT_RENDERER.drawString("Login", width / 2 - size / 2, height / 4, Color.yellow, true);
-        textFields.forEach(TextField::render);
+        components.forEach(Component::render);
         ///         textField = new TextField("", width / 2 - 100, height / 2, 200, 20, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);

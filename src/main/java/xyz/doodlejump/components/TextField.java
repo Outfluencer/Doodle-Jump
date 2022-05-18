@@ -1,20 +1,16 @@
-package xyz.doodlejump.textures;
+package xyz.doodlejump.components;
 
 import org.lwjgl.glfw.GLFW;
 import xyz.doodlejump.DoodleJump;
+import xyz.doodlejump.textures.GlyphPageFontRenderer;
+import xyz.doodlejump.textures.RenderUtils;
 
 import java.awt.*;
 import java.util.function.Function;
 
-public class TextField {
+public class TextField extends Component {
 
     public String text;
-
-    public int posX;
-    public int posY;
-
-    public int width;
-    public int height;
     public int lengthLimit = 128;
 
     public boolean focused;
@@ -34,6 +30,7 @@ public class TextField {
         this.glyphPageFontRenderer = glyphPageFontRenderer;
     }
 
+    @Override
     public void render() {
 
         final long now = System.currentTimeMillis();
@@ -50,6 +47,7 @@ public class TextField {
         glyphPageFontRenderer.drawString(textureRender, posX, posY, Color.BLACK, false);
     }
 
+    @Override
     public void onMouseClick(int button, int action, int mods) {
         if(action == GLFW.GLFW_PRESS && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             if(DoodleJump.mouseX >= posX && DoodleJump.mouseX <= posX + width && DoodleJump.mouseY >= posY && DoodleJump.mouseY <= posY + height) {
@@ -60,12 +58,14 @@ public class TextField {
         }
     }
 
+    @Override
     public void onCharTyped(char c) {
         if(text.length() < lengthLimit && focused) {
             text += c;
         }
     }
 
+    @Override
     public void onKey(int key, int scancode, int action, int mods) {
         if((action == GLFW.GLFW_PRESS || action == GLFW.GLFW_REPEAT) && key == GLFW.GLFW_KEY_BACKSPACE) {
             if(text.length() > 0 && focused) {
