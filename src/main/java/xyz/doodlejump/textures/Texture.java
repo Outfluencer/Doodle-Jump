@@ -68,13 +68,16 @@ public class Texture {
 
 
         glTexCoord2d(0,0);
-        glVertex2d(0, 0);
+        glVertex2d(x, y);
+
         glTexCoord2d(1,0);
-        glVertex2d(width, 0);
+        glVertex2d(width + x, y);
+
         glTexCoord2d(1,1);
-        glVertex2d(width, height);
+        glVertex2d(width + x,  height + y);
+
         glTexCoord2d(0,1);
-        glVertex2d(0, height);
+        glVertex2d(x, height + y);
 
         glEnd();
         glDisable(GL_TEXTURE_2D);

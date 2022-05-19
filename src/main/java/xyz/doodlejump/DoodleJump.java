@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL;
 import xyz.doodlejump.components.Button;
 import xyz.doodlejump.components.Component;
 import xyz.doodlejump.components.TextField;
+import xyz.doodlejump.mysql.Communication;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
 import xyz.doodlejump.textures.Texture;
 
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL46.*;
@@ -25,13 +27,15 @@ public class DoodleJump {
 
     public static Texture lol;
 
-    public static final List<Component> components = new ArrayList<>();
+    public static final List<Component> components = new CopyOnWriteArrayList<>();
     public static TextField usernameField;
     public static TextField passwordField;
 
     public static final int width = 400, height = 700;
 
     public static double mouseX, mouseY;
+
+    public static String username;
 
     public static void startWindow() throws IOException {
         if (!glfwInit()) {
@@ -44,10 +48,10 @@ public class DoodleJump {
 
         glfwMakeContextCurrent(windowHandle);
         GL.createCapabilities();
-        lol = new Texture(ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\Screenshot_1.png")));
+        lol = new Texture(ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\amogus.png")));
         GLYPH_PAGE_FONT_RENDERER = GlyphPageFontRenderer.create("Comic Sans MS", 180, false, false, false);
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES = GlyphPageFontRenderer.create("Comic Sans MS", 30, false, false, false);
-
+        GLYPH_PAGE_FONT_RENDERER_START = GlyphPageFontRenderer.create("Comic Sans MS", 100, false, false, false);
         // 1 = VSYNC, 0 = infinit fps;
         glfwSwapInterval(1);
 
@@ -60,7 +64,29 @@ public class DoodleJump {
         passwordField.textFunction = text -> text.replaceAll(".", "*");
         components.add(passwordField);
 
-        components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> System.out.println("Penis"), "Login", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+        components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
+
+
+            // Try Login
+            if(Communication.tryLogin(usernameField.text, passwordField.text)) {
+                setToStartUp();
+            }
+
+        }, "Login", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+
+        components.add(new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
+            gameState = GameState.REGISTER;
+            components.removeIf(component -> component instanceof Button && ((Button) component).text.equals("Login"));
+            components.removeIf(component -> component instanceof Button && ((Button) component).text.equals("Register now!"));
+
+            components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
+                // Try Login
+                if(Communication.tryRegister(usernameField.text, passwordField.text)) {
+                    setToStartUp();
+                }
+            }, "Create Account", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+
+        }, "Register now!", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
             components.forEach(textField -> textField.onCharTyped((char) codepoint));
@@ -84,7 +110,7 @@ public class DoodleJump {
                 isProcessRunning = false;
             }
             int ticks = timer.update();
-            if (gameState == GameState.RUNNING) {
+            if (gameState == GameState.RUNNING || gameState == GameState.START_GAME) {
                 for (int i = 0; i < Math.min(ticks, 10); i++) {
                     runGameTick();
                 }
@@ -95,9 +121,22 @@ public class DoodleJump {
         }
     }
 
+
+
+    public static void setToStartUp() {
+        username = usernameField.text;
+        gameState = GameState.START_GAME;
+        components.clear();
+        Button b =  new Button(width / 2 - (360/ 2), height / 2 - 80, 360, 80, () -> {
+            components.clear();
+            gameState = GameState.RUNNING;
+        }, "START GAME", GLYPH_PAGE_FONT_RENDERER_START);
+        b.rgb = true;
+        components.add(b);
+    }
+
     public static void runGameTick() {
-
-
+        ColorChanger.changeColor();
     }
 
     public static void render() {
@@ -122,8 +161,15 @@ public class DoodleJump {
             drawLoginScreen();
         }
 
+        if (gameState == GameState.REGISTER) {
+            drawRegisterScreen();
+        }
+
+        if (gameState == GameState.START_GAME) {
+            drawStartScreen();
+        }
+
         components.forEach(Component::render);
-        lol.draw(10, 10, 50, 50);
 
     }
 
@@ -153,6 +199,7 @@ public class DoodleJump {
 
     public static GlyphPageFontRenderer GLYPH_PAGE_FONT_RENDERER;
     public static GlyphPageFontRenderer GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES;
+    public static GlyphPageFontRenderer GLYPH_PAGE_FONT_RENDERER_START;
 
     public static void drawLoginScreen() {
         int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Login");
@@ -164,6 +211,26 @@ public class DoodleJump {
 
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Password");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Password", width / 2 - size / 2, height / 2 + 40, Color.BLUE, true);
+    }
+
+    public static void drawRegisterScreen() {
+        int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Register");
+        GLYPH_PAGE_FONT_RENDERER.drawString("Register", width / 2 - size / 2, height / 4, Color.yellow, true);
+
+        size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
+        GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);
+
+        size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Password");
+        GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Password", width / 2 - size / 2, height / 2 + 40, Color.BLUE, true);
+    }
+
+
+    public static void drawStartScreen() {
+        int size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth(username);
+
+        int w = 49;
+        GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString(username, width / 2 - size / 2, height - 120 + (Math.sin(System.currentTimeMillis() / 50) * 20), Color.BLUE, true);
+        lol.draw(width / 2 - (w / 2), height - 100 + (Math.sin(System.currentTimeMillis() / 50) * 20), w, 744 / 12);
     }
 
 }
