@@ -6,6 +6,7 @@ import xyz.doodlejump.components.Button;
 import xyz.doodlejump.components.Component;
 import xyz.doodlejump.components.TextField;
 import xyz.doodlejump.mysql.Communication;
+import xyz.doodlejump.render.WorldRenderer;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
 import xyz.doodlejump.textures.Texture;
 
@@ -26,6 +27,7 @@ public class DoodleJump {
     public static boolean isProcessRunning = true;
 
     public static Texture lol;
+    public static WorldRenderer worldRenderer;
 
     public static final List<Component> components = new CopyOnWriteArrayList<>();
     public static TextField usernameField;
@@ -54,6 +56,8 @@ public class DoodleJump {
         GLYPH_PAGE_FONT_RENDERER_START = GlyphPageFontRenderer.create("Comic Sans MS", 100, false, false, false);
         // 1 = VSYNC, 0 = infinit fps;
         glfwSwapInterval(1);
+
+        worldRenderer = new WorldRenderer();
 
         usernameField = new TextField("", width / 2 - (260 / 2), height / 2, 260, 28, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         usernameField.lengthLimit = 16;
@@ -195,6 +199,7 @@ public class DoodleJump {
     public static double x, y;
 
     public static void drawGameScreen() {
+        worldRenderer.render();
     }
 
     public static GlyphPageFontRenderer GLYPH_PAGE_FONT_RENDERER;

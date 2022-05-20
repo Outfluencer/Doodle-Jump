@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import xyz.doodlejump.ColorChanger;
 import xyz.doodlejump.DoodleJump;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
-import xyz.doodlejump.textures.RenderUtils;
+import xyz.doodlejump.render.RenderUtils;
 
 import java.awt.*;
 

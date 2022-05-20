@@ -3,7 +3,7 @@ package xyz.doodlejump.components;
 import org.lwjgl.glfw.GLFW;
 import xyz.doodlejump.DoodleJump;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
-import xyz.doodlejump.textures.RenderUtils;
+import xyz.doodlejump.render.RenderUtils;
 
 import java.awt.*;
 import java.util.function.Function;
@@ -50,11 +50,7 @@ public class TextField extends Component {
     @Override
     public void onMouseClick(int button, int action, int mods) {
         if(action == GLFW.GLFW_PRESS && button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-            if(DoodleJump.mouseX >= posX && DoodleJump.mouseX <= posX + width && DoodleJump.mouseY >= posY && DoodleJump.mouseY <= posY + height) {
-                focused = true;
-            }else {
-                focused = false;
-            }
+            focused = DoodleJump.mouseX >= posX && DoodleJump.mouseX <= posX + width && DoodleJump.mouseY >= posY && DoodleJump.mouseY <= posY + height;
         }
     }
 

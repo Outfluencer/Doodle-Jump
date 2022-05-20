@@ -1,4 +1,4 @@
-package xyz.doodlejump.textures;
+package xyz.doodlejump.render;
 
 import java.awt.*;
 
