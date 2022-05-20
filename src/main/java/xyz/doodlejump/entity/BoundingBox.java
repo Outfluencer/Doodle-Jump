@@ -27,9 +27,13 @@ public class BoundingBox {
 
     public double collideY(BoundingBox other, double motionY) {
         if(other.minX < maxX && other.maxX > minX) {
-            if(motionY > 0.0 && other.minY < maxY) {
-                final double deltaY = other.minY - maxY;
-                return Math.min(deltaY, motionY);
+            if(motionY > 0.0 && other.maxY <= minY) {
+                final double deltaY = minY - other.maxY;
+                if(deltaY < motionY) motionY = deltaY;
+            }else if(motionY < 0.0 && other.minY >= maxY) {
+                final double deltaY = maxY - other.minY;
+                if(deltaY > motionY) motionY = deltaY;
+                return motionY;
             }
         }
         return motionY;
@@ -37,9 +41,13 @@ public class BoundingBox {
 
     public double collideX(BoundingBox other, double motionX) {
         if(other.minY < maxY && other.maxY > minY) {
-            if(motionX > 0.0 && other.minX < maxX) {
-                final double deltaX = other.minX - maxX;
-                return Math.min(deltaX, motionX);
+            if(motionX > 0.0 && other.maxX <= minX) {
+                final double deltaX = minX - other.maxX;
+                if(deltaX < motionX) motionX = deltaX;
+            }else if(motionX < 0.0 && other.minX >= maxX) {
+                final double deltaX = maxX - other.minX;
+                if(deltaX > motionX) motionX = deltaX;
+                return motionX;
             }
         }
         return motionX;

@@ -54,7 +54,7 @@ public class DoodleJump {
 
         glfwMakeContextCurrent(windowHandle);
         GL.createCapabilities();
-        lol = new Texture(ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\amogus.png")));
+        lol = new Texture(ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\player.png")));
         GLYPH_PAGE_FONT_RENDERER = GlyphPageFontRenderer.create("Comic Sans MS", 180, false, false, false);
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES = GlyphPageFontRenderer.create("Comic Sans MS", 30, false, false, false);
         GLYPH_PAGE_FONT_RENDERER_START = GlyphPageFontRenderer.create("Comic Sans MS", 100, false, false, false);

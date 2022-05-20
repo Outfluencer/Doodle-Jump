@@ -4,7 +4,7 @@ import xyz.doodlejump.world.World;
 
 import java.util.List;
 
-public abstract class Entity {
+public abstract class Entity implements Comparable<Entity> {
 
     private final World world;
     public BoundingBox boundingBox;
@@ -19,8 +19,9 @@ public abstract class Entity {
     }
 
     public void tick() {
+        this.updateBoundingBox();
         motionX *= 0.98;
-        motionY -= 0.2;
+        motionY -= 0.8;
         motionY *= 0.98;
         if(Math.abs(motionX) < 0.005) motionX = 0.0;
         if(Math.abs(motionY) < 0.005) motionY = 0.0;
@@ -28,7 +29,7 @@ public abstract class Entity {
         double newX = motionX;
         double newY = motionY;
 
-        final List<BoundingBox> boxes = world.getCollisionBoxes(this.boundingBox);
+        final List<BoundingBox> boxes = world.getCollisionBoxes(this);
         if(newY != 0.0) {
             for (BoundingBox box : boxes) {
                 newY = box.collideY(this.boundingBox, newY);
@@ -62,6 +63,7 @@ public abstract class Entity {
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+        this.updateBoundingBox();
     }
 
     public void updateBoundingBox() {
@@ -71,7 +73,14 @@ public abstract class Entity {
         boundingBox.maxY = y + height;
     }
 
+    public abstract EntityType getType();
+
     public World getWorld() {
         return world;
+    }
+
+    @Override
+    public int compareTo(Entity o) {
+        return this.getType().getId() - o.getType().getId();
     }
 }

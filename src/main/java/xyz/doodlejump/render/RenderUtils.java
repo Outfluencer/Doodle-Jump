@@ -15,4 +15,15 @@ public class RenderUtils {
         glVertex2d(x, y +height);
         glEnd();
     }
+
+    public static void outline(double x, double y, double width, double height, Color color) {
+        glColor4d(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0, color.getAlpha() / 255.0);
+        glBegin(GL_LINE_STRIP);
+        glLineWidth(3.0f);
+        glVertex2d(x, y);
+        glVertex2d(x + width, y);
+        glVertex2d(x + width, y + height);
+        glVertex2d(x, y +height);
+        glEnd();
+    }
 }
