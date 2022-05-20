@@ -9,6 +9,7 @@ import xyz.doodlejump.mysql.Communication;
 import xyz.doodlejump.render.WorldRenderer;
 import xyz.doodlejump.textures.GlyphPageFontRenderer;
 import xyz.doodlejump.textures.Texture;
+import xyz.doodlejump.world.World;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class DoodleJump {
 
     public static Texture lol;
     public static WorldRenderer worldRenderer;
+    public static World world;
 
     public static final List<Component> components = new CopyOnWriteArrayList<>();
     public static TextField usernameField;
@@ -134,13 +136,22 @@ public class DoodleJump {
         Button b =  new Button(width / 2 - (360/ 2), height / 2 - 80, 360, 80, () -> {
             components.clear();
             gameState = GameState.RUNNING;
+            loadGame();
         }, "START GAME", GLYPH_PAGE_FONT_RENDERER_START);
         b.rgb = true;
         components.add(b);
     }
 
+    private static void loadGame() {
+        world = new World();
+        world.loadDefault();
+    }
+
     public static void runGameTick() {
         ColorChanger.changeColor();
+        if(world != null) {
+            world.tick();
+        }
     }
 
     public static void render() {

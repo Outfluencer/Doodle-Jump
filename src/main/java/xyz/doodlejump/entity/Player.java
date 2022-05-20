@@ -1,6 +1,10 @@
 package xyz.doodlejump.entity;
 
-public class Player {
+import xyz.doodlejump.world.World;
 
+public class Player extends Entity {
 
+    public Player(World world) {
+        super(world);
+    }
 }
