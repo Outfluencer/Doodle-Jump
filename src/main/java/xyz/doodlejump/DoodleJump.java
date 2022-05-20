@@ -41,6 +41,8 @@ public class DoodleJump {
 
     public static String username;
 
+    public static Button registerButton = null;
+
     public static void startWindow() throws IOException {
         if (!glfwInit()) {
             throw new RuntimeException("Can't init GLFW");
@@ -70,29 +72,41 @@ public class DoodleJump {
         passwordField.textFunction = text -> text.replaceAll(".", "*");
         components.add(passwordField);
 
-        components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
-
-
+        Button loginButton = new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
             // Try Login
             if(Communication.tryLogin(usernameField.text, passwordField.text)) {
                 setToStartUp();
             }
 
-        }, "Login", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+        }, "Login", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+        Button createAccountButton = new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
+            if(Communication.tryRegister(usernameField.text, passwordField.text)) {
+                setToStartUp();
+            }
+        }, "Create Account", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
 
-        components.add(new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
+
+        Button goBackButton = new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
+            components.clear();
+            components.add(usernameField);
+            components.add(passwordField);
+            gameState = GameState.LOGIN;
+            components.add(loginButton);
+            components.add(registerButton);
+
+        }, "Go Back", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+
+        registerButton = new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
             gameState = GameState.REGISTER;
-            components.removeIf(component -> component instanceof Button && ((Button) component).text.equals("Login"));
+            components.remove(loginButton);
             components.removeIf(component -> component instanceof Button && ((Button) component).text.equals("Register now!"));
+            components.add(createAccountButton);
+            components.add(goBackButton);
 
-            components.add(new Button(width / 2 - 75, height / 2 + 128, 150, 50, () -> {
-                // Try Login
-                if(Communication.tryRegister(usernameField.text, passwordField.text)) {
-                    setToStartUp();
-                }
-            }, "Create Account", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+        }, "Register now!", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
 
-        }, "Register now!", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES));
+        components.add(loginButton);
+        components.add(registerButton);
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
             components.forEach(textField -> textField.onCharTyped((char) codepoint));
