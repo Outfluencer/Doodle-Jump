@@ -17,7 +17,7 @@ public class BreakingGround extends Ground {
 
     @Override
     public void tick() {
-        this.updateBoundingBox();
+        super.tick();
         if(this.boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY)){
             getWorld().despawn(this);
             getWorld().getPlayer().jump();

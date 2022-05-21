@@ -4,6 +4,7 @@ import xyz.doodlejump.world.World;
 
 public class Ground extends Entity {
 
+    public boolean highJump = false;
     public Ground(World world) {
         this(world, 0.0, 0.0);
     }
@@ -18,6 +19,12 @@ public class Ground extends Entity {
     @Override
     public void tick() {
         this.updateBoundingBox();
+        if(boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY))
+        {
+            if(highJump){
+                getWorld().getPlayer().motionY = 50;
+            }
+        }
     }
 
     @Override

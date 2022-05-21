@@ -72,6 +72,13 @@ public class WorldRenderer {
         }
 
 
+
+        if(entity instanceof Ground){
+            if(((Ground) entity).highJump){
+                DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("|-----|",x+50, y-68, Color.BLACK, true);
+            }
+        }
+
         Color color = Color.WHITE;
         if(entity instanceof BreakingGround){
             color = new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b);

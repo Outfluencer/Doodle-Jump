@@ -36,7 +36,8 @@ public class World {
     public void spawnNew() {
         int type = secureRandom.nextInt(5);
         Ground firstGround = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
-
+        boolean highjump = secureRandom.nextInt(20) == 3;
+        firstGround.highJump = highjump;
         double groundW = firstGround.width;
 
         boolean spawnTwo = secureRandom.nextBoolean() && secureRandom.nextBoolean();
@@ -48,8 +49,10 @@ public class World {
 
         if (spawnTwo) {
             type = secureRandom.nextInt(5);
+            highjump = secureRandom.nextInt(20) == 3;
             while (true) {
                 Ground ground = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
+                ground.highJump = highjump;
                 groundW = ground.width;
                 xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
                 ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
@@ -101,7 +104,7 @@ public class World {
         return boxes;
     }
 
-
+        // aa||
     public List<Entity> getEntities() {
         return entities;
     }

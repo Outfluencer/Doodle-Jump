@@ -35,6 +35,6 @@ public class MovingGround extends Ground {
             this.direction *= -1.0;
         }
         this.x += direction;
-        this.updateBoundingBox();
+        super.tick();
     }
 }
