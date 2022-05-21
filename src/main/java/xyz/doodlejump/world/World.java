@@ -30,6 +30,7 @@ public class World {
         ground.setPosition(0.0, -250.0);
         this.spawn(ground);
 
+        cameraY = -250.0;
         spawnNew();
     }
 
@@ -71,7 +72,7 @@ public class World {
         for (Entity entity : entities) {
             entity.tick();
             if (entity != player) {
-                if (entity.y - player.y < -450.0) {
+                if (entity.y + entity.height < cameraY) {
                     this.despawn(entity);
                 }
             }
