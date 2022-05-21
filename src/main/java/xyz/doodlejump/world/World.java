@@ -36,13 +36,16 @@ public class World {
     }
 
     public void spawnNew() {
+        boolean breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
+        Ground firstGround = breaking ? new BreakingGround(this) : new Ground(this);
+
+        double groundW = firstGround.width;
+
         boolean spawnTwo = secureRandom.nextBoolean() && secureRandom.nextBoolean();
-        double xSpawnNew = DoodleJump.width / -2.0  + secureRandom.nextInt(DoodleJump.width);
+        double xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
         double ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
 
-        boolean breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
 
-        Ground firstGround = breaking ? new BreakingGround(this) : new Ground(this);
         firstGround.setPosition(xSpawnNew, ySpawn);
         this.spawn(firstGround);
 
@@ -52,9 +55,10 @@ public class World {
         if(spawnTwo){
             breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
             while(true) {
-                xSpawnNew = DoodleJump.width / -2.0 + secureRandom.nextInt(DoodleJump.width);
-                ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
                 Ground ground = breaking ? new BreakingGround(this) : new Ground(this);
+                groundW = ground.width;
+                xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
+                ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
                 ground.setPosition(xSpawnNew, ySpawn);
                 if(!ground.boundingBox.intersects(firstGround.boundingBox)){
                     this.spawn(ground);
