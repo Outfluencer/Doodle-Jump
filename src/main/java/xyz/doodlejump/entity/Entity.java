@@ -20,7 +20,7 @@ public abstract class Entity implements Comparable<Entity> {
 
     public void tick() {
         this.updateBoundingBox();
-        motionX *= 0.98;
+        motionX *= 0.9;
         motionY -= 0.8;
         motionY *= 0.98;
         if(Math.abs(motionX) < 0.005) motionX = 0.0;

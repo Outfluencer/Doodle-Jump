@@ -40,7 +40,7 @@ public class Player extends Entity {
 
         final boolean left = DoodleJump.isKeyPressed(GLFW.GLFW_KEY_LEFT) || DoodleJump.isKeyPressed(GLFW.GLFW_KEY_A);
         final boolean right = DoodleJump.isKeyPressed(GLFW.GLFW_KEY_RIGHT) || DoodleJump.isKeyPressed(GLFW.GLFW_KEY_D);
-        int add = 8;
+        int add = 12;
         if (!left || !right) {
             if(left) {
                 motionX = -add;
