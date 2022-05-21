@@ -16,6 +16,8 @@ public class World {
     private final List<Entity> entities = new ArrayList<>();
     private Player player;
     public SecureRandom secureRandom = new SecureRandom();
+    public double cameraY;
+    private double cameraAnim;
 
     public void loadDefault() {
         player = new Player(this);
@@ -35,6 +37,9 @@ public class World {
         for (Entity entity : entities) {
             entity.tick();
         }
+        cameraAnim = (player.y - 300.0) - cameraY;
+        cameraAnim /= 10.0;
+        cameraY += cameraAnim;
     }
 
     public void spawn(Entity entity) {

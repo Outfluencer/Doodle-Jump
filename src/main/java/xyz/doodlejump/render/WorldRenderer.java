@@ -1,5 +1,6 @@
 package xyz.doodlejump.render;
 
+import org.lwjgl.opengl.GL11;
 import xyz.doodlejump.ColorChanger;
 import xyz.doodlejump.DoodleJump;
 import xyz.doodlejump.entity.Entity;
@@ -24,10 +25,12 @@ public class WorldRenderer {
     public void render() {
         final World world = DoodleJump.world;
         if(world == null) return;
-
+        GL11.glPushMatrix();
+        GL11.glTranslated(0.0, world.cameraY, 0.0);
         for (Entity entity : world.getEntities()) {
             this.renderEntity(entity);
         }
+        GL11.glPopMatrix();
     }
 
     private void renderEntity(Entity entity) {

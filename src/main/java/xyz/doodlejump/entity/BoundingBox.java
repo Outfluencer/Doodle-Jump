@@ -6,10 +6,8 @@ public class BoundingBox {
     public double minY;
     public double maxX;
     public double maxY;
-    public Entity entity;
 
-    public BoundingBox(Entity entity, double minX, double minY, double maxX, double maxY) {
-        this.entity = entity;
+    public BoundingBox(double minX, double minY, double maxX, double maxY) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
@@ -29,34 +27,13 @@ public class BoundingBox {
 
     public double collideY(BoundingBox other, double motionY) {
         if(other.minX < maxX && other.maxX > minX) {
-            if(motionY > 0.0 && other.maxY <= minY) {
-                final double deltaY = minY - other.maxY;
-                if(!(entity instanceof Ground)) {
-                    if (deltaY < motionY) motionY = deltaY;
-                }
-
-            }else if(motionY < 0.0 && other.minY >= maxY) {
+            if(motionY < 0.0 && other.minY >= maxY) {
                 final double deltaY = maxY - other.minY;
                 if(deltaY > motionY) motionY = deltaY;
                 return motionY;
             }
         }
         return motionY;
-    }
-
-    public double collideX(BoundingBox other, double motionX) {
-        if(entity instanceof Ground) return  motionX;
-        if(other.minY < maxY && other.maxY > minY) {
-            if(motionX > 0.0 && other.maxX <= minX) {
-                final double deltaX = minX - other.maxX;
-                if(deltaX < motionX) motionX = deltaX;
-            }else if(motionX < 0.0 && other.minX >= maxX) {
-                final double deltaX = maxX - other.minX;
-                if(deltaX > motionX) motionX = deltaX;
-                return motionX;
-            }
-        }
-        return motionX;
     }
 
     public void offset(double x, double y) {

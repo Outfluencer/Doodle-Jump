@@ -26,6 +26,7 @@ public class DoodleJump {
 
     public static GameState gameState = GameState.LOGIN;
     public static boolean isProcessRunning = true;
+    public static long windowHandle;
 
     public static Texture lol;
     public static WorldRenderer worldRenderer;
@@ -50,7 +51,7 @@ public class DoodleJump {
         GLFWErrorCallback.createPrint(System.err).set();
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        long windowHandle = glfwCreateWindow(width, height, "Doodle Jump", 0, 0);
+        windowHandle = glfwCreateWindow(width, height, "Doodle Jump", 0, 0);
 
         glfwMakeContextCurrent(windowHandle);
         GL.createCapabilities();
@@ -109,16 +110,6 @@ public class DoodleJump {
         components.add(registerButton);
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
-            if(gameState == GameState.RUNNING) {
-                int add = 8;
-                if(codepoint == 97){
-                    world.getPlayer().motionX = -add;
-                }
-                if(codepoint == 100){
-                    world.getPlayer().motionX = add;
-                }
-                return;
-            }
             components.forEach(textField -> textField.onCharTyped((char) codepoint));
         });
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
@@ -137,7 +128,7 @@ public class DoodleJump {
 
 
         glClearColor(245 / 255.0f, 230 / 255.0f, 218 / 255.0f, 1);
-        Timer timer = new Timer(30);
+        Timer timer = new Timer(60);
         while (isProcessRunning) {
             if (glfwWindowShouldClose(windowHandle)) {
                 isProcessRunning = false;
@@ -154,7 +145,9 @@ public class DoodleJump {
         }
     }
 
-
+    public static boolean isKeyPressed(int key) {
+        return glfwGetKey(windowHandle, key) != 0;
+    }
 
     public static void setToStartUp() {
         username = usernameField.text;

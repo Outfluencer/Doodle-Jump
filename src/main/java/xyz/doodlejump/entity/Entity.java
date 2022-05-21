@@ -16,7 +16,6 @@ public abstract class Entity implements Comparable<Entity> {
     public Entity(World world) {
         this.world = world;
         this.boundingBox = new BoundingBox();
-        this.boundingBox.entity = this;
     }
 
     public void tick() {
@@ -39,14 +38,6 @@ public abstract class Entity implements Comparable<Entity> {
                 boundingBox.offset(0.0, newY);
             }
         }
-        if(newX != 0.0) {
-            for (BoundingBox box : boxes) {
-                newX = box.collideX(this.boundingBox, newX);
-            }
-            if(newX != 0.0) {
-                boundingBox.offset(newX, 0.0);
-            }
-        }
 
         this.x += newX;
         this.y += newY;
@@ -57,9 +48,8 @@ public abstract class Entity implements Comparable<Entity> {
 
         if(newY != motionY) motionY = 0.0;
 
-
         if(onGround) {
-            motionY = 30;
+            motionY = 26;
         }
 
 
