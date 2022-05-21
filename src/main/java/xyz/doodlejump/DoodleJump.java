@@ -109,9 +109,23 @@ public class DoodleJump {
         components.add(registerButton);
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
+            if(gameState == GameState.RUNNING) {
+                System.out.println(codepoint);
+                int add = 5;
+                if(codepoint == 97){
+                    world.getPlayer().motionX -= add;
+                }
+                if(codepoint == 100){
+                    world.getPlayer().motionX += add;
+                }
+                return;
+            }
             components.forEach(textField -> textField.onCharTyped((char) codepoint));
         });
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
+
+
+
             components.forEach(textField -> textField.onKey(key, scancode, action, mods));
         });
         glfwSetCursorPosCallback(windowHandle, (window, xpos, ypos) -> {
@@ -235,7 +249,6 @@ public class DoodleJump {
         int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("Login");
         GLYPH_PAGE_FONT_RENDERER.drawString("Login", width / 2 - size / 2, height / 4, Color.yellow, true);
 
-        ///         textField = new TextField("", width / 2 - 100, height / 2, 200, 20, GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Username");
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Username", width / 2 - size / 2, height / 2 - 30, Color.BLUE, true);
 
