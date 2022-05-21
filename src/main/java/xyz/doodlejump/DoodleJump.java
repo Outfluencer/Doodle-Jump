@@ -215,6 +215,7 @@ public class DoodleJump {
 
     public static void drawBackground() {
         glColor4d(255 / 255.0d, 165 / 255.0d, 158 / 255.0d, 1);
+        glLineWidth(1.0f);
         glBegin(GL_LINES);
 
         int space = 18;
@@ -228,6 +229,13 @@ public class DoodleJump {
             glVertex2d(0, y);
             glVertex2d(width, y);
         }
+
+        glEnd();
+
+        glLineWidth(3.0f);
+        glBegin(GL_LINES);
+        glVertex2d(3 * space, 0.0f);
+        glVertex2d(3 * space, height);
         glEnd();
     }
 
