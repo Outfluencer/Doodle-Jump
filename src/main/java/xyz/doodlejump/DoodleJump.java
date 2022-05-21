@@ -110,13 +110,12 @@ public class DoodleJump {
 
         glfwSetCharCallback(windowHandle, (window, codepoint) -> {
             if(gameState == GameState.RUNNING) {
-                System.out.println(codepoint);
-                int add = 5;
+                int add = 8;
                 if(codepoint == 97){
-                    world.getPlayer().motionX -= add;
+                    world.getPlayer().motionX = -add;
                 }
                 if(codepoint == 100){
-                    world.getPlayer().motionX += add;
+                    world.getPlayer().motionX = add;
                 }
                 return;
             }
@@ -138,7 +137,7 @@ public class DoodleJump {
 
 
         glClearColor(245 / 255.0f, 230 / 255.0f, 218 / 255.0f, 1);
-        Timer timer = new Timer(60);
+        Timer timer = new Timer(30);
         while (isProcessRunning) {
             if (glfwWindowShouldClose(windowHandle)) {
                 isProcessRunning = false;

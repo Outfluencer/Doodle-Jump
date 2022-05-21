@@ -6,8 +6,10 @@ public class BoundingBox {
     public double minY;
     public double maxX;
     public double maxY;
+    public Entity entity;
 
-    public BoundingBox(double minX, double minY, double maxX, double maxY) {
+    public BoundingBox(Entity entity, double minX, double minY, double maxX, double maxY) {
+        this.entity = entity;
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
@@ -29,7 +31,10 @@ public class BoundingBox {
         if(other.minX < maxX && other.maxX > minX) {
             if(motionY > 0.0 && other.maxY <= minY) {
                 final double deltaY = minY - other.maxY;
-                if(deltaY < motionY) motionY = deltaY;
+                if(!(entity instanceof Ground)) {
+                    if (deltaY < motionY) motionY = deltaY;
+                }
+
             }else if(motionY < 0.0 && other.minY >= maxY) {
                 final double deltaY = maxY - other.minY;
                 if(deltaY > motionY) motionY = deltaY;
@@ -40,6 +45,7 @@ public class BoundingBox {
     }
 
     public double collideX(BoundingBox other, double motionX) {
+        if(entity instanceof Ground) return  motionX;
         if(other.minY < maxY && other.maxY > minY) {
             if(motionX > 0.0 && other.maxX <= minX) {
                 final double deltaX = minX - other.maxX;

@@ -16,11 +16,11 @@ public abstract class Entity implements Comparable<Entity> {
     public Entity(World world) {
         this.world = world;
         this.boundingBox = new BoundingBox();
+        this.boundingBox.entity = this;
     }
 
     public void tick() {
         this.updateBoundingBox();
-        System.out.println(motionX);
         motionX *= 0.98;
         motionY -= 0.8;
         motionY *= 0.98;
@@ -55,11 +55,6 @@ public abstract class Entity implements Comparable<Entity> {
         collidedVertically = newY != motionY;
         onGround = motionY < 0.0 && collidedVertically;
 
-        /*
-        // was macht das das macht die motions broke
-        if(newY != motionX){
-            motionX = 0.0;
-        }*/
         if(newY != motionY) motionY = 0.0;
 
 

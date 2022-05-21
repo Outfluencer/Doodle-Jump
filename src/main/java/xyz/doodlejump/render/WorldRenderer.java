@@ -3,6 +3,7 @@ package xyz.doodlejump.render;
 import xyz.doodlejump.ColorChanger;
 import xyz.doodlejump.DoodleJump;
 import xyz.doodlejump.entity.Entity;
+import xyz.doodlejump.entity.Player;
 import xyz.doodlejump.textures.Texture;
 import xyz.doodlejump.world.World;
 
@@ -30,6 +31,10 @@ public class WorldRenderer {
     }
 
     private void renderEntity(Entity entity) {
+
+        Player player = entity.getWorld().getPlayer();
+        double playerPos = player.y;
+
         double w = DoodleJump.width;
         double h = DoodleJump.height;
         double x = w / 2.0 + entity.x - entity.width / 2.0;

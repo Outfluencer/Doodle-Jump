@@ -5,13 +5,17 @@ import xyz.doodlejump.entity.Entity;
 import xyz.doodlejump.entity.Ground;
 import xyz.doodlejump.entity.Player;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class World {
 
     private final List<Entity> entities = new ArrayList<>();
     private Player player;
+    public SecureRandom secureRandom = new SecureRandom();
 
     public void loadDefault() {
         player = new Player(this);
@@ -20,6 +24,10 @@ public class World {
 
         Ground ground = new Ground(this);
         ground.setPosition(0.0, 150.0);
+        this.spawn(ground);
+
+        ground = new Ground(this);
+        ground.setPosition(0.0, 420.0);
         this.spawn(ground);
     }
 
@@ -46,6 +54,7 @@ public class World {
         }
         return boxes;
     }
+
 
     public List<Entity> getEntities() {
         return entities;

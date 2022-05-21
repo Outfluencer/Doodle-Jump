@@ -11,6 +11,18 @@ public class Player extends Entity {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        if(y < -1000){
+            y = 400;
+            x = 0;
+            motionX = 0;
+            motionY = 0;
+        }
+    }
+
+    @Override
     public EntityType getType() {
         return EntityType.PLAYER;
     }
