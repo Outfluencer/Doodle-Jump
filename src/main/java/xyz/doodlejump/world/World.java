@@ -29,9 +29,9 @@ public class World {
         ground.setPosition(0.0, 150.0);
         this.spawn(ground);
 
-        ground = new Ground(this);
-        ground.setPosition(0.0, 420.0);
-        this.spawn(ground);
+        this.spawn(new Ground(this, 0.0, 420.0));
+        this.spawn(new Ground(this, -150.0, 420.0));
+        this.spawn(new Ground(this, 150.0, 420.0));
     }
 
     public void tick() {
