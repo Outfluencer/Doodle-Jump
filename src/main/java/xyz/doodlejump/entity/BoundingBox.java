@@ -36,6 +36,18 @@ public class BoundingBox {
         return motionY;
     }
 
+    public boolean isGoingToCollideFromTop(BoundingBox other, double motionY) {
+        if(other.minX < maxX && other.maxX > minX) {
+            if(motionY < 0.0 && other.maxY <= minY) {
+                double deltaY = other.maxY - minY;
+                if(motionY > deltaY) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void offset(double x, double y) {
         minX += x;
         minY += y;
