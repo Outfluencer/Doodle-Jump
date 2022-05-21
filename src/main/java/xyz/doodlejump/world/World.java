@@ -1,9 +1,6 @@
 package xyz.doodlejump.world;
 
-import xyz.doodlejump.entity.BoundingBox;
-import xyz.doodlejump.entity.Entity;
-import xyz.doodlejump.entity.Ground;
-import xyz.doodlejump.entity.Player;
+import xyz.doodlejump.entity.*;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -18,7 +15,8 @@ public class World {
     private Player player;
     public SecureRandom secureRandom = new SecureRandom();
     public double cameraY;
-    private double cameraAnim;
+
+
 
     public void loadDefault() {
         player = new Player(this);
@@ -29,9 +27,9 @@ public class World {
         ground.setPosition(0.0, 150.0);
         this.spawn(ground);
 
-        this.spawn(new Ground(this, 0.0, 420.0));
-        this.spawn(new Ground(this, -150.0, 420.0));
-        this.spawn(new Ground(this, 150.0, 420.0));
+        this.spawn(new BreakingGround(this, 0.0, 420.0));
+        this.spawn(new BreakingGround(this, -150.0, 420.0));
+        this.spawn(new BreakingGround(this, 150.0, 420.0));
     }
 
     public void tick() {
@@ -44,7 +42,7 @@ public class World {
             }
         }
 
-        cameraAnim = (player.y - 300.0) - cameraY;
+        double cameraAnim = (player.y - 300.0) - cameraY;
         cameraAnim /= 10.0;
         cameraY += cameraAnim;
     }

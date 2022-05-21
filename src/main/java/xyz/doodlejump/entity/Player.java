@@ -17,7 +17,7 @@ public class Player extends Entity {
     }
 
     public int getScore(){
-        return (int) (highestPosition / 10);
+        return (int) (highestPosition);
     }
 
     @Override

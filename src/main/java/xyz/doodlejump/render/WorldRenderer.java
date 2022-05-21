@@ -3,6 +3,7 @@ package xyz.doodlejump.render;
 import org.lwjgl.opengl.GL11;
 import xyz.doodlejump.ColorChanger;
 import xyz.doodlejump.DoodleJump;
+import xyz.doodlejump.entity.BreakingGround;
 import xyz.doodlejump.entity.Entity;
 import xyz.doodlejump.entity.EntityType;
 import xyz.doodlejump.entity.Player;
@@ -12,6 +13,8 @@ import xyz.doodlejump.world.World;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+
+import static org.lwjgl.opengl.GL11.glColor4d;
 
 public class WorldRenderer {
 
@@ -32,6 +35,9 @@ public class WorldRenderer {
             this.renderEntity(entity);
         }
         GL11.glPopMatrix();
+
+
+        DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Score: " + world.getPlayer().getScore(), 0, 5, Color.BLUE, true);
     }
 
     private void renderEntity(Entity entity) {
@@ -55,18 +61,28 @@ public class WorldRenderer {
             default:
                 throw new IllegalArgumentException("Unknown entity type: " + entity.getType());
         }
+
+
         if(entity.getType() == EntityType.PLAYER) {
             if (entity.x + entity.width / 2.0 >= DoodleJump.width / 2.0) { // Right
                 double d = (entity.x + entity.width / 2.0) - DoodleJump.width / 2.0;
                 double leftSide = entity.width - d;
-                texture.draw(leftSide * -1.0, y - entity.height, entity.width, entity.height);
+                texture.draw(leftSide * -1.0, y - entity.height, entity.width, entity.height, Color.white);
             } else if (entity.x - entity.width / 2.0 <= DoodleJump.width / -2.0) { // Left
                 double d = (entity.x - entity.width / 2.0) - DoodleJump.width / -2.0;
                 texture.draw(DoodleJump.width + d, y - entity.height, entity.width, entity.height);
             }
         }
-        texture.draw(x, y - entity.height, entity.width, entity.height);
-        RenderUtils.outline(x, y - entity.height, entity.width, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
+
+
+
+        if(entity instanceof BreakingGround){
+            texture.draw(x, y - entity.height, entity.width, entity.height, ColorChanger.getColor());
+
+        }else{
+            texture.draw(x, y - entity.height, entity.width, entity.height);
+        }
+       // RenderUtils.outline(x, y - entity.height, entity.width, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
     }
 
     private Texture loadTexture(String name) {

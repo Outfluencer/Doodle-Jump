@@ -36,7 +36,7 @@ public class DoodleJump {
     public static TextField usernameField;
     public static TextField passwordField;
 
-    public static final int width = 400, height = 700;
+    public static final int width = 544, height = 768 ;
 
     public static double mouseX, mouseY;
 

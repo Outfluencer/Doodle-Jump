@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL46;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
@@ -59,9 +60,8 @@ public class Texture {
     }
 
 
-    public void draw(double x, double y, double width, double height) {
-
-        glColor4d(1,1,1,1);
+    public void draw(double x, double y, double width, double height, Color color) {
+        glColor4d(color.getRed() / 255D, color.getGreen() / 255D, color.getBlue()/255D, color.getAlpha() / 255D);
         glEnable(GL_TEXTURE_2D);
         bind();
         glBegin(GL_QUADS);
@@ -81,6 +81,10 @@ public class Texture {
 
         glEnd();
         glDisable(GL_TEXTURE_2D);
-
     }
+
+    public void draw(double x, double y, double width, double height) {
+        draw(x,y,width,height, Color.white);
+    }
+
 }

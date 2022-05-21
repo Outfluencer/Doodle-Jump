@@ -1,5 +1,7 @@
 package xyz.doodlejump;
 
+import java.awt.*;
+
 public class ColorChanger
 {
     public static int r;
@@ -8,7 +10,10 @@ public class ColorChanger
     static boolean rUp;
     static boolean gUp;
     static boolean bUp;
-    
+
+    public static Color getColor(){
+        return new Color(r,g,b);
+    }
     public static void changeColor() {
         if (rUp) {
             if (r != 255 && ++r == 255) {
