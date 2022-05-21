@@ -59,21 +59,25 @@ public class WorldRenderer {
                 throw new IllegalArgumentException("Unknown entity type: " + entity.getType());
         }
 
-
+        
+        double eW = entity.width;
+        if(entity.getType() == EntityType.PLAYER && entity.left) {
+            eW = eW * -1.0;
+            x -= eW;
+        }
+        
         if(entity.getType() == EntityType.PLAYER) {
-            if (entity.x + entity.width / 2.0 >= DoodleJump.width / 2.0) { // Right
-                double d = (entity.x + entity.width / 2.0) - DoodleJump.width / 2.0;
-                double leftSide = entity.width - d;
-                texture.draw(leftSide * -1.0, y - entity.height, entity.width, entity.height, Color.white);
-            } else if (entity.x - entity.width / 2.0 <= DoodleJump.width / -2.0) { // Left
-                double d = (entity.x - entity.width / 2.0) - DoodleJump.width / -2.0;
-                texture.draw(DoodleJump.width + d, y - entity.height, entity.width, entity.height);
+            if (entity.x + eW / 2.0 >= DoodleJump.width / 2.0) { // Right
+                double d = (entity.x + eW / 2.0) - DoodleJump.width / 2.0;
+                double leftSide = eW - d;
+                texture.draw(leftSide * -1.0, y - entity.height, eW, entity.height, Color.white);
+            } else if (entity.x - eW / 2.0 <= DoodleJump.width / -2.0) { // Left
+                double d = (entity.x - eW / 2.0) - DoodleJump.width / -2.0;
+                texture.draw(DoodleJump.width + d, y - entity.height, eW, entity.height);
             }
         }
 
-
-
-        if(entity instanceof Ground){
+        if(entity instanceof Ground) {
             if(((Ground) entity).highJump){
                 DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("|-----|",x+50, y-68, Color.BLACK, true);
             }
@@ -85,8 +89,9 @@ public class WorldRenderer {
         }else if(entity instanceof MovingGround) {
             color = new Color(50, 50, 255);
         }
-        texture.draw(x, y - entity.height, entity.width, entity.height, color);
-        // RenderUtils.outline(x, y - entity.height, entity.width, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
+        
+        texture.draw(x, y - entity.height, eW, entity.height, color);
+        // RenderUtils.outline(x, y - entity.height, eW, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
     }
 
     private Texture loadTexture(String name) {

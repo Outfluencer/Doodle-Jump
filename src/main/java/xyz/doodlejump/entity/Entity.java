@@ -12,6 +12,7 @@ public abstract class Entity implements Comparable<Entity> {
     public double width, height;
     public double motionX, motionY;
     public boolean onGround, collidedHorizontally, collidedVertically;
+    public boolean left;
 
     public Entity(World world) {
         this.world = world;
@@ -25,6 +26,10 @@ public abstract class Entity implements Comparable<Entity> {
         motionY *= 0.98;
         if(Math.abs(motionX) < 0.005) motionX = 0.0;
         if(Math.abs(motionY) < 0.005) motionY = 0.0;
+
+        if(motionX != 0.0) {
+            left = motionX < 0.0;
+        }
 
         double newX = motionX;
         double newY = motionY;
