@@ -34,9 +34,17 @@ public class World {
     }
 
     public void tick() {
+        final List<Entity> toRemove = new ArrayList<>();
         for (Entity entity : entities) {
             entity.tick();
+            if(entity != player) {
+                if(entity.y - player.y < -400.0) {
+                    toRemove.add(entity);
+                }
+            }
         }
+        toRemove.forEach(this::despawn);
+
         cameraAnim = (player.y - 300.0) - cameraY;
         cameraAnim /= 10.0;
         cameraY += cameraAnim;
