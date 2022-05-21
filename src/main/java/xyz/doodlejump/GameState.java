@@ -2,6 +2,6 @@ package xyz.doodlejump;
 
 public enum GameState {
 
-    LOGIN, REGISTER, START_GAME, RUNNING
+    LOGIN, REGISTER, START_GAME, RUNNING, GAME_OVER
 
 }

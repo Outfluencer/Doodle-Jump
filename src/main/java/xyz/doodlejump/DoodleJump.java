@@ -134,6 +134,7 @@ public class DoodleJump {
                 isProcessRunning = false;
             }
             int ticks = timer.update();
+            ColorChanger.changeColor();
             if (gameState == GameState.RUNNING || gameState == GameState.START_GAME) {
                 for (int i = 0; i < Math.min(ticks, 10); i++) {
                     runGameTick();
@@ -168,7 +169,6 @@ public class DoodleJump {
     }
 
     public static void runGameTick() {
-        ColorChanger.changeColor();
         if(world != null) {
             world.tick();
         }
@@ -203,6 +203,10 @@ public class DoodleJump {
         if (gameState == GameState.START_GAME) {
             drawStartScreen();
         }
+        if (gameState == GameState.GAME_OVER) {
+            drawGameOver();
+        }
+
 
         components.forEach(Component::render);
 
@@ -266,6 +270,17 @@ public class DoodleJump {
         int w = 49;
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString(username, width / 2 - size / 2, height - 120 + (Math.sin(System.currentTimeMillis() / 50) * 20), Color.BLUE, true);
         lol.draw(width / 2 - (w / 2), height - 100 + (Math.sin(System.currentTimeMillis() / 50) * 20), w, 744 / 12);
+    }
+
+
+    public static void drawGameOver() {
+        int size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("GAME");
+        GLYPH_PAGE_FONT_RENDERER.drawString("GAME", width / 2 - size / 2, height / 4, Color.RED, true);
+        size = GLYPH_PAGE_FONT_RENDERER.getStringWidth("OVER");
+        GLYPH_PAGE_FONT_RENDERER.drawString("OVER", width / 2 - size / 2, height / 4+ 100, Color.RED, true);
+
+        size = GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.getStringWidth("Score: " + world.getPlayer().getScore());
+        GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("Score: " + world.getPlayer().getScore(), width / 2 - size / 2, height / 2 + 200, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b), true);
     }
 
 }
