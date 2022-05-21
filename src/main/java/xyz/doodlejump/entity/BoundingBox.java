@@ -38,11 +38,9 @@ public class BoundingBox {
 
     public boolean isGoingToCollideFromTop(BoundingBox other, double motionY) {
         if(other.minX < maxX && other.maxX > minX) {
-            if(motionY < 0.0 && other.maxY <= minY) {
-                double deltaY = other.maxY - minY;
-                if(motionY > deltaY) {
-                    return true;
-                }
+            if(motionY < 0.0 && other.minY >= maxY) {
+                double deltaY = maxY - other.minY;
+                if(deltaY > motionY) return true;
             }
         }
         return false;
