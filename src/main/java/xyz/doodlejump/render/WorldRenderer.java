@@ -3,10 +3,7 @@ package xyz.doodlejump.render;
 import org.lwjgl.opengl.GL11;
 import xyz.doodlejump.ColorChanger;
 import xyz.doodlejump.DoodleJump;
-import xyz.doodlejump.entity.BreakingGround;
-import xyz.doodlejump.entity.Entity;
-import xyz.doodlejump.entity.EntityType;
-import xyz.doodlejump.entity.Player;
+import xyz.doodlejump.entity.*;
 import xyz.doodlejump.textures.Texture;
 import xyz.doodlejump.world.World;
 
@@ -75,14 +72,14 @@ public class WorldRenderer {
         }
 
 
-
+        Color color = Color.WHITE;
         if(entity instanceof BreakingGround){
-            texture.draw(x, y - entity.height, entity.width, entity.height, ColorChanger.getColor());
-
-        }else{
-            texture.draw(x, y - entity.height, entity.width, entity.height);
+            color = new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b);
+        }else if(entity instanceof MovingGround) {
+            color = new Color(50, 50, 255);
         }
-       // RenderUtils.outline(x, y - entity.height, entity.width, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
+        texture.draw(x, y - entity.height, entity.width, entity.height, color);
+        // RenderUtils.outline(x, y - entity.height, entity.width, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
     }
 
     private Texture loadTexture(String name) {

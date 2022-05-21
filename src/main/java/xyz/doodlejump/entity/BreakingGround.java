@@ -15,8 +15,6 @@ public class BreakingGround extends Ground {
         this.setPosition(x, y);
     }
 
-
-
     @Override
     public void tick() {
         this.updateBoundingBox();
@@ -24,10 +22,5 @@ public class BreakingGround extends Ground {
             getWorld().despawn(this);
             getWorld().getPlayer().jump();
         }
-    }
-
-    @Override
-    public EntityType getType() {
-        return EntityType.GROUND;
     }
 }

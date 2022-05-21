@@ -31,13 +31,11 @@ public class World {
         this.spawn(ground);
 
         spawnNew();
-
-
     }
 
     public void spawnNew() {
-        boolean breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
-        Ground firstGround = breaking ? new BreakingGround(this) : new Ground(this);
+        int type = secureRandom.nextInt(5);
+        Ground firstGround = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
 
         double groundW = firstGround.width;
 
@@ -45,48 +43,40 @@ public class World {
         double xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
         double ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
 
-
         firstGround.setPosition(xSpawnNew, ySpawn);
         this.spawn(firstGround);
 
-
-
-
-        if(spawnTwo){
-            breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
-            while(true) {
-                Ground ground = breaking ? new BreakingGround(this) : new Ground(this);
+        if (spawnTwo) {
+            type = secureRandom.nextInt(5);
+            while (true) {
+                Ground ground = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
                 groundW = ground.width;
                 xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
                 ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
                 ground.setPosition(xSpawnNew, ySpawn);
-                if(!ground.boundingBox.intersects(firstGround.boundingBox)){
+                if (!ground.boundingBox.intersects(firstGround.boundingBox)) {
                     this.spawn(ground);
                     break;
                 }
             }
         }
 
-        spawnAtY+=150;
+        spawnAtY += 150;
     }
-
-
 
     public void tick() {
         for (Entity entity : entities) {
             entity.tick();
-            if(entity != player) {
-                if(entity.y - player.y < -400.0) {
+            if (entity != player) {
+                if (entity.y - player.y < -450.0) {
                     this.despawn(entity);
                 }
             }
         }
 
-        if(entities.size() < 50){
+        if (entities.size() < 50) {
             spawnNew();
         }
-
-
 
         double cameraAnim = (player.y - 300.0) - cameraY;
         cameraAnim /= 10.0;
@@ -105,7 +95,7 @@ public class World {
     public List<BoundingBox> getCollisionBoxes(Entity source) {
         final List<BoundingBox> boxes = new ArrayList<>();
         for (Entity entity : entities) {
-            if(entity == source) continue;
+            if (entity == source) continue;
             boxes.add(entity.boundingBox);
         }
         return boxes;
