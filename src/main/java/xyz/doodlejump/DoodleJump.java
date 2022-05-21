@@ -44,6 +44,7 @@ public class DoodleJump {
 
     public static Button registerButton = null;
 
+
     public static void startWindow() throws IOException {
         if (!glfwInit()) {
             throw new RuntimeException("Can't init GLFW");

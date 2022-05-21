@@ -47,12 +47,6 @@ public abstract class Entity implements Comparable<Entity> {
         onGround = motionY < 0.0 && collidedVertically;
 
         if(newY != motionY) motionY = 0.0;
-
-        if(onGround) {
-            motionY = 26;
-        }
-
-
         this.updateBoundingBox();
     }
 

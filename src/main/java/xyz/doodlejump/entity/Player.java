@@ -48,6 +48,13 @@ public class Player extends Entity {
                 motionX = add;
             }
         }
+        if(onGround){
+            jump();
+        }
+    }
+
+    public void jump(){
+        motionY = 26;
     }
 
     @Override

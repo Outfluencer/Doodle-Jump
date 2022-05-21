@@ -1,5 +1,6 @@
 package xyz.doodlejump.world;
 
+import xyz.doodlejump.DoodleJump;
 import xyz.doodlejump.entity.*;
 
 import java.security.SecureRandom;
@@ -13,24 +14,59 @@ public class World {
 
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
     private Player player;
+
     public SecureRandom secureRandom = new SecureRandom();
     public double cameraY;
 
 
+    int spawnAtY = 20;
 
     public void loadDefault() {
         player = new Player(this);
-        player.setPosition(0.0, 400.0);
+        player.setPosition(0.0, 0.0);
         this.spawn(player);
 
         Ground ground = new Ground(this);
-        ground.setPosition(0.0, 150.0);
+        ground.setPosition(0.0, -250.0);
         this.spawn(ground);
 
-        this.spawn(new BreakingGround(this, 0.0, 420.0));
-        this.spawn(new BreakingGround(this, -150.0, 420.0));
-        this.spawn(new BreakingGround(this, 150.0, 420.0));
+        spawnNew();
+
+
     }
+
+    public void spawnNew() {
+        boolean spawnTwo = secureRandom.nextBoolean() && secureRandom.nextBoolean();
+        double xSpawnNew = DoodleJump.width / -2.0  + secureRandom.nextInt(DoodleJump.width);
+        double ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
+
+        boolean breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
+
+        Ground firstGround = breaking ? new BreakingGround(this) : new Ground(this);
+        firstGround.setPosition(xSpawnNew, ySpawn);
+        this.spawn(firstGround);
+
+
+
+
+        if(spawnTwo){
+            breaking = secureRandom.nextBoolean() && secureRandom.nextBoolean();
+            while(true) {
+                xSpawnNew = DoodleJump.width / -2.0 + secureRandom.nextInt(DoodleJump.width);
+                ySpawn = spawnAtY + (10 - secureRandom.nextInt(20));
+                Ground ground = breaking ? new BreakingGround(this) : new Ground(this);
+                ground.setPosition(xSpawnNew, ySpawn);
+                if(!ground.boundingBox.intersects(firstGround.boundingBox)){
+                    this.spawn(ground);
+                    break;
+                }
+            }
+        }
+
+        spawnAtY+=150;
+    }
+
+
 
     public void tick() {
         for (Entity entity : entities) {
@@ -41,6 +77,12 @@ public class World {
                 }
             }
         }
+
+        if(entities.size() < 50){
+            spawnNew();
+        }
+
+
 
         double cameraAnim = (player.y - 300.0) - cameraY;
         cameraAnim /= 10.0;
