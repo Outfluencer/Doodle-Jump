@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class World {
 
-    private final List<Entity> entities = new ArrayList<>();
+    private final List<Entity> entities = new CopyOnWriteArrayList<>();
     private Player player;
     public SecureRandom secureRandom = new SecureRandom();
     public double cameraY;
@@ -34,7 +35,7 @@ public class World {
     }
 
     public void tick() {
-        for (Entity entity : new ArrayList<>(entities)) {
+        for (Entity entity : entities) {
             entity.tick();
             if(entity != player) {
                 if(entity.y - player.y < -400.0) {
