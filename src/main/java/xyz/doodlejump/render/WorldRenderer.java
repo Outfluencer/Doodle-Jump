@@ -62,7 +62,7 @@ public class WorldRenderer {
         
         double eW = entity.width;
         if(entity.getType() == EntityType.PLAYER && entity.left) {
-            eW = eW * -1.0;
+            eW *= -1.0;
             x -= eW;
         }
         
