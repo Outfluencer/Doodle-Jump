@@ -17,10 +17,10 @@ public class BreakingGround extends Ground {
 
     @Override
     public void tick() {
+        highJump = true;
         super.tick();
-        if(this.boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY)){
+        if(isPlayerJumping) {
             getWorld().despawn(this);
-            getWorld().getPlayer().jump();
         }
     }
 }

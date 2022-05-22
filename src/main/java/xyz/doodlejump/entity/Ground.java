@@ -16,15 +16,18 @@ public class Ground extends Entity {
         this.setPosition(x, y);
     }
 
+    public boolean isPlayerJumping = false;
+
     @Override
     public void tick() {
         this.updateBoundingBox();
-        if(boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY))
+        isPlayerJumping = boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY);
+        if(isPlayerJumping)
         {
-            if(highJump){
-                getWorld().getPlayer().motionY = 50;
-            }
+            getWorld().getPlayer().jump(highJump);
         }
+
+
     }
 
     @Override

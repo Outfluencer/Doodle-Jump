@@ -48,13 +48,15 @@ public class Player extends Entity {
                 motionX = add;
             }
         }
-        if(onGround){
-            jump();
-        }
+
     }
 
-    public void jump(){
-        motionY = 26;
+    public void jump(boolean high) {
+        if(motionY > 0){
+            System.out.println("LOL");
+            return;
+        }
+        motionY = high ? 50 : 26;
     }
 
     @Override
