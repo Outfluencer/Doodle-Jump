@@ -17,7 +17,6 @@ public class BreakingGround extends Ground {
 
     @Override
     public void tick() {
-        highJump = true;
         super.tick();
         if(isPlayerJumping) {
             getWorld().despawn(this);

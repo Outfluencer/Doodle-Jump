@@ -53,10 +53,9 @@ public class Player extends Entity {
 
     public void jump(boolean high) {
         if(motionY > 0){
-            System.out.println("LOL");
             return;
         }
-        motionY = high ? 50 : 26;
+        motionY = high ? 62 : 26;
     }
 
     @Override
