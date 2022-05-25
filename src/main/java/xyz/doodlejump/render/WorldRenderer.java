@@ -19,6 +19,8 @@ public class WorldRenderer {
     private final Texture groundTexture;
     private final Texture playerBootsTexture;
     private final Texture bootsTexture;
+    private final Texture trampTexture;
+    private final Texture julianTexture;
 
 
     public WorldRenderer() {
@@ -26,6 +28,8 @@ public class WorldRenderer {
         this.groundTexture = loadTexture("ground");
         this.playerBootsTexture = loadTexture("player_boots");
         this.bootsTexture = loadTexture("boots");
+        this.trampTexture = loadTexture("tramp");
+        this.julianTexture = loadTexture("julian_boss_mob");
 
     }
 
@@ -66,6 +70,9 @@ public class WorldRenderer {
             case GROUND:
                 texture = groundTexture;
                 break;
+            case JULIAN:
+                texture = julianTexture;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown entity type: " + entity.getType());
         }
@@ -101,8 +108,9 @@ public class WorldRenderer {
 
 
         if(entity instanceof Ground) {
+
             if(((Ground) entity).highJump){
-                DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("|-----|",x+50, y-68, Color.BLACK, true);
+                trampTexture.draw(x + 30, y -90, 636/7,520/7);
             }
             if(((Ground) entity).hasBoots){
                 bootsTexture.draw(x + 20, y -90, 323/2.7,114/2.7);

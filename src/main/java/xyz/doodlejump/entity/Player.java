@@ -34,9 +34,7 @@ public class Player extends Entity {
             highestPosition = y;
         }
         if (y < highestPosition - DoodleJump.height * 1.3) {
-            getWorld().despawn(this);
-            DoodleJump.gameState = GameState.GAME_OVER;
-            DoodleJump.components.add(new Button(DoodleJump.width / 2 - (360/ 2), DoodleJump.height / 2 + 100 , 360, 80, DoodleJump::setToStartUp, "RETRY", DoodleJump.GLYPH_PAGE_FONT_RENDERER_START));
+            die();
         }
 
 
@@ -55,6 +53,12 @@ public class Player extends Entity {
             }
         }
 
+    }
+
+    public void die(){
+        getWorld().getEntities().forEach(e -> getWorld().despawn(e));
+        DoodleJump.gameState = GameState.GAME_OVER;
+        DoodleJump.components.add(new Button(DoodleJump.width / 2 - (360/ 2), DoodleJump.height / 2 + 100 , 360, 80, DoodleJump::setToStartUp, "RETRY", DoodleJump.GLYPH_PAGE_FONT_RENDERER_START));
     }
 
     public void jump(boolean high) {

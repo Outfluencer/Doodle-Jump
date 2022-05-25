@@ -167,8 +167,11 @@ public class DoodleJump {
         world.loadDefault();
     }
 
+    public static int currentTick;
+
     public static void runGameTick() {
         if(world != null) {
+            currentTick++;
             world.tick();
         }
     }

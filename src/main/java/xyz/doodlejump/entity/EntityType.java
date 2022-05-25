@@ -3,7 +3,9 @@ package xyz.doodlejump.entity;
 public enum EntityType {
 
     GROUND(0),
-    PLAYER(1);
+    PLAYER(1),
+
+    JULIAN(2);
 
     private int id;
 

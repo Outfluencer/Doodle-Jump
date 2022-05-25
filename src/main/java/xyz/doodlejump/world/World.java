@@ -31,7 +31,6 @@ public class World {
         this.spawn(ground);
 
         cameraY = -250.0;
-        spawnNew();
     }
 
     public void spawnNew() {
@@ -74,6 +73,12 @@ public class World {
                 }
             }
         }
+
+        if(secureRandom.nextInt(100) == 1){
+            Julian julian = new Julian(this, spawnAtY + (10 - secureRandom.nextInt(20)));
+            this.spawn(julian);
+        }
+
 
         spawnAtY += 150;
     }
