@@ -86,6 +86,12 @@ public class DoodleJump {
         }, "Create Account", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
 
 
+        Button cracked = new Button(width / 2 - 75, height / 2 + 128 + 80 + 80, 150, 50, () -> {
+            gameState = GameState.START_GAME;
+            username = "";
+            setToStartUp();
+
+        }, "Play Offline", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
         Button goBackButton = new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
             components.clear();
             components.add(usernameField);
@@ -93,18 +99,26 @@ public class DoodleJump {
             gameState = GameState.LOGIN;
             components.add(loginButton);
             components.add(registerButton);
+            components.add(cracked);
 
         }, "Go Back", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
+
+
 
         registerButton = new Button(width / 2 - 75, height / 2 + 128 + 80, 150, 50, () -> {
             gameState = GameState.REGISTER;
             components.remove(loginButton);
             components.removeIf(component -> component instanceof Button && ((Button) component).text.equals("Register now!"));
+
+            components.add(cracked);
             components.add(createAccountButton);
             components.add(goBackButton);
 
         }, "Register now!", GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES);
 
+
+
+        components.add(cracked);
         components.add(loginButton);
         components.add(registerButton);
 
