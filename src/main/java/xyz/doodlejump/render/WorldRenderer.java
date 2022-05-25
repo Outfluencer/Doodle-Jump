@@ -17,10 +17,16 @@ public class WorldRenderer {
 
     private final Texture playerTexture;
     private final Texture groundTexture;
+    private final Texture playerBootsTexture;
+    private final Texture bootsTexture;
+
 
     public WorldRenderer() {
         this.playerTexture = loadTexture("player");
         this.groundTexture = loadTexture("ground");
+        this.playerBootsTexture = loadTexture("player_boots");
+        this.bootsTexture = loadTexture("boots");
+
     }
 
     public void render() {
@@ -50,7 +56,12 @@ public class WorldRenderer {
         Texture texture;
         switch (entity.getType()) {
             case PLAYER:
-                texture = playerTexture;
+                Player playerEntity = (Player) entity;
+                if(playerEntity.hasBoots()){
+                    texture = playerBootsTexture;
+                } else {
+                    texture = playerTexture;
+                }
                 break;
             case GROUND:
                 texture = groundTexture;
@@ -77,11 +88,7 @@ public class WorldRenderer {
             }
         }
 
-        if(entity instanceof Ground) {
-            if(((Ground) entity).highJump){
-                DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("|-----|",x+50, y-68, Color.BLACK, true);
-            }
-        }
+
 
         Color color = Color.WHITE;
         if(entity instanceof BreakingGround){
@@ -91,6 +98,16 @@ public class WorldRenderer {
         }
         
         texture.draw(x, y - entity.height, eW, entity.height, color);
+
+
+        if(entity instanceof Ground) {
+            if(((Ground) entity).highJump){
+                DoodleJump.GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString("|-----|",x+50, y-68, Color.BLACK, true);
+            }
+            if(((Ground) entity).hasBoots){
+                bootsTexture.draw(x + 20, y -90, 323/2.7,114/2.7);
+            }
+        }
         // RenderUtils.outline(x, y - entity.height, eW, entity.height, new Color(ColorChanger.r, ColorChanger.g, ColorChanger.b));
     }
 
@@ -101,4 +118,21 @@ public class WorldRenderer {
             throw new RuntimeException(e);
         }
     }
+
+    public Texture getPlayerBootsTexture() {
+        return playerBootsTexture;
+    }
+
+    public Texture getBootsTexture() {
+        return bootsTexture;
+    }
+
+    public Texture getGroundTexture() {
+        return groundTexture;
+    }
+
+    public Texture getPlayerTexture() {
+        return playerTexture;
+    }
+
 }

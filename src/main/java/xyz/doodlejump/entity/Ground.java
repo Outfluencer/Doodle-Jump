@@ -18,12 +18,20 @@ public class Ground extends Entity {
 
     public boolean isPlayerJumping = false;
 
+    public boolean hasBoots = false;
+
     @Override
     public void tick() {
         this.updateBoundingBox();
         isPlayerJumping = boundingBox.isGoingToCollideFromTop(getWorld().getPlayer().boundingBox, getWorld().getPlayer().motionY);
         if(isPlayerJumping)
         {
+
+            if(hasBoots){
+                hasBoots = false;
+                getWorld().getPlayer().bootstime = System.currentTimeMillis() + 12000;
+            }
+
             getWorld().getPlayer().jump(highJump);
         }
 

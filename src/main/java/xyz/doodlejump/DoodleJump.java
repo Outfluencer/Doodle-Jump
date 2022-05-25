@@ -28,7 +28,6 @@ public class DoodleJump {
     public static boolean isProcessRunning = true;
     public static long windowHandle;
 
-    public static Texture lol;
     public static WorldRenderer worldRenderer;
     public static World world;
 
@@ -56,7 +55,6 @@ public class DoodleJump {
 
         glfwMakeContextCurrent(windowHandle);
         GL.createCapabilities();
-        lol = new Texture(ImageIO.read(new File("C:\\Users\\Administrator\\Desktop\\player.png")));
         GLYPH_PAGE_FONT_RENDERER = GlyphPageFontRenderer.create("Comic Sans MS", 180, false, false, false);
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES = GlyphPageFontRenderer.create("Comic Sans MS", 30, false, false, false);
         GLYPH_PAGE_FONT_RENDERER_START = GlyphPageFontRenderer.create("Comic Sans MS", 100, false, false, false);
@@ -280,7 +278,7 @@ public class DoodleJump {
 
         int w = 49;
         GLYPH_PAGE_FONT_RENDERER_TEXT_BOXES.drawString(username, width / 2 - size / 2, height - 120 + (Math.sin(System.currentTimeMillis() / 50) * 20), Color.BLUE, true);
-        lol.draw(width / 2 - (w / 2), height - 100 + (Math.sin(System.currentTimeMillis() / 50) * 20), w, 744 / 12);
+        worldRenderer.getPlayerTexture().draw(width / 2 - (w / 2), height - 100 + (Math.sin(System.currentTimeMillis() / 50) * 20), w, 744 / 12);
     }
 
 

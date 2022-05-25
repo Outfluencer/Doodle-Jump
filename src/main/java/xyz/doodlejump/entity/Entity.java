@@ -11,7 +11,6 @@ public abstract class Entity implements Comparable<Entity> {
     public double x, y;
     public double width, height;
     public double motionX, motionY;
-    public boolean onGround, collidedHorizontally, collidedVertically;
     public boolean left;
 
     public Entity(World world) {
@@ -31,28 +30,8 @@ public abstract class Entity implements Comparable<Entity> {
             left = motionX < 0.0;
         }
 
-        double newX = motionX;
-        double newY = motionY;
-
-        final List<BoundingBox> boxes = world.getCollisionBoxes(this);
-        if(newY != 0.0) {
-            for (BoundingBox box : boxes) {
-                newY = box.collideY(this.boundingBox, newY);
-            }
-            if(newY != 0.0) {
-                boundingBox.offset(0.0, newY);
-            }
-        }
-
-        this.x += newX;
-        this.y += newY;
-
-        collidedHorizontally = newX != motionX;
-        collidedVertically = newY != motionY;
-        onGround = motionY < 0.0 && collidedVertically;
-
-        if(newY != motionY) motionY = 0.0;
-        this.updateBoundingBox();
+        this.x += motionX;
+        this.y += motionY;
     }
 
     public void setPosition(double x, double y) {

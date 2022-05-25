@@ -38,7 +38,11 @@ public class World {
         int type = secureRandom.nextInt(5);
         Ground firstGround = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
         boolean highjump = secureRandom.nextInt(20) == 3;
-        firstGround.highJump = highjump;
+        boolean boots = secureRandom.nextInt(40) == 3;
+        firstGround.hasBoots = boots;
+        if(!boots){
+            firstGround.highJump = highjump;
+        }
         double groundW = firstGround.width;
 
         boolean spawnTwo = secureRandom.nextBoolean() && secureRandom.nextBoolean();
@@ -50,9 +54,15 @@ public class World {
 
         if (spawnTwo) {
             type = secureRandom.nextInt(5);
-            highjump = secureRandom.nextInt(20) == 3;
+            boots = secureRandom.nextInt(40) == 3;
+            if(!boots){
+                highjump = secureRandom.nextInt(20) == 3;
+            }else{
+                highjump = false;
+            }
             while (true) {
                 Ground ground = type == 4 ? new BreakingGround(this) : type == 3 ? new MovingGround(this) : new Ground(this);
+                firstGround.hasBoots = boots;
                 ground.highJump = highjump;
                 groundW = ground.width;
                 xSpawnNew = (DoodleJump.width / -2.0 + groundW / 2.0) + secureRandom.nextInt(DoodleJump.width - (int) groundW);
@@ -78,7 +88,7 @@ public class World {
             }
         }
 
-        if (entities.size() < 50) {
+        while(entities.size() < 50) {
             spawnNew();
         }
 

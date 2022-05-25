@@ -10,6 +10,12 @@ public class Player extends Entity {
 
     public double highestPosition;
 
+    public long bootstime = 0;
+
+    public boolean hasBoots(){
+        return bootstime > System.currentTimeMillis();
+    }
+
     public Player(World world) {
         super(world);
         this.width = 65.0;
@@ -40,7 +46,7 @@ public class Player extends Entity {
 
         final boolean left = DoodleJump.isKeyPressed(GLFW.GLFW_KEY_LEFT) || DoodleJump.isKeyPressed(GLFW.GLFW_KEY_A);
         final boolean right = DoodleJump.isKeyPressed(GLFW.GLFW_KEY_RIGHT) || DoodleJump.isKeyPressed(GLFW.GLFW_KEY_D);
-        int add = 12;
+        int add = 10;
         if (!left || !right) {
             if(left) {
                 motionX = -add;
@@ -55,7 +61,13 @@ public class Player extends Entity {
         if(motionY > 0){
             return;
         }
-        motionY = high ? 62 : 26;
+        if(high){
+            motionY = 62;
+        } else if(hasBoots()){
+            motionY = 40;
+        } else {
+            motionY = 26;
+        }
     }
 
     @Override
