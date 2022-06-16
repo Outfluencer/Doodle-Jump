@@ -1,3 +1,3 @@
 # Doodle-Jump
 
-Just a school project
+Just a school project.
